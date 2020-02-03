@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Stand</string>
+    <string name="ver_lista">ver lista</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="salvar">Salvar</string>
+    <string name="nome">Nome</string>
+    <string name="celular">21 97201–1402</string>
+    <string name="celular2">21 9720 (OPCIOÑAL)</string>
+</resources>
