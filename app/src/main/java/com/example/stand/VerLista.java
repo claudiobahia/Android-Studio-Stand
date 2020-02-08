@@ -3,13 +3,19 @@ package com.example.stand;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -141,13 +147,6 @@ public class VerLista extends AppCompatActivity implements AdapterRecycleView.On
         btnLigar = mDialog.findViewById(R.id.btnLigar);
         gif = mDialog.findViewById(R.id.imgGiff);
 
-        btnLigar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //todo LIGAR numero
-                Toast.makeText(getApplicationContext(), "Ligando.", Toast.LENGTH_SHORT).show();
-            }
-        });
         String l1, l2, l3, l4, gifDaVez = "";
         l1 = "https://media.giphy.com/media/YRuFixSNWFVcXaxpmX/200w_d.gif";
         l2 = "https://media.giphy.com/media/xTiTnk7cRvop40CYLu/200w_d.gif";
@@ -178,7 +177,7 @@ public class VerLista extends AppCompatActivity implements AdapterRecycleView.On
 
         int random = new Random().nextInt(clientes.size());
         String hora, data;
-        Cliente c = clientes.get(random);
+        final Cliente c = clientes.get(random);
         System.out.println("kaka " + c);
         hora = c.getData().split("_")[0];
         data = c.getData().split("_")[1];
@@ -187,6 +186,19 @@ public class VerLista extends AppCompatActivity implements AdapterRecycleView.On
         txtPopCelular.setText(String.format("Telefone: %s %s", c.getTelefone(), c.getTelefoneOpcional()));
         txtPopHora.setText(String.format("Hora: %s", hora));
         txtPopData.setText(String.format("Data: %s", data));
+
+        btnLigar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent dial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + c.getTelefone()));
+                if (ContextCompat.checkSelfPermission(VerLista.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(VerLista.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                } else {
+                    startActivity(dial);
+                }
+                Toast.makeText(getApplicationContext(), "Ligando.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void sortearVisible(View v) {
